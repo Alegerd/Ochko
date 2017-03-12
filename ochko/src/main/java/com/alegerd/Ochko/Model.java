@@ -12,6 +12,7 @@ import java.util.*;
 public class Model<T> extends Thread implements Observer<T>{
 
     List<T> spareCards = new ArrayList<T>();
+    List<Player> players = new ArrayList<Player>();
     List<Player> winners = new ArrayList<Player>();
     List<Player> bets = new ArrayList<Player>();
 
@@ -55,14 +56,32 @@ public class Model<T> extends Thread implements Observer<T>{
         spareCards.add((T)new Card(11));
         spareCards.add((T)new Card(11));
         spareCards.add((T)new Card(11));
+
+        Player player1 = new Player(1,0.3f);
+        Player player2 = new Player(2,0.7f);
+        Player player3 = new Player(3,0.9f);
+        players.add(player1);
+        players.add(player2);
+        players.add(player3);
     }
 
     @Override
     public void run() {
-        while (!Thread.interrupted())
-        {
-
+        for (Player player: players) {
+            player.start();
         }
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        for (Player player: players) {
+            player.interrupt();
+        }
+//        while (!Thread.interrupted())
+//        {
+//
+//        }
     }
 
     public <T> T giveCard() {
